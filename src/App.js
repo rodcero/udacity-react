@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import MovieList from './MovieList';
 
 /*
 Display a list of movies where each movie contains a list of users that favorited it.
@@ -98,26 +99,23 @@ const movies = {
 };
 
 class App extends Component {
-  
-  constructor(props){
-    super(props)
-    
-    const liked = profiles.reduce((acc, profile) => {
-    const fav = profile.favoriteMovieID;
-      console.log(fav);
-    if(acc[fav]){
-      console.log(acc, fav, acc[fav].users)
-      acc[fav].users.push(users[profile.userID])
-    }else{
-      acc[fav] = {users: [users[profile.userID]]}
-    }
-    console.log(acc)
-    return acc;
-  }, {});
-  console.log(liked)
+  constructor(props) {
+    super(props);
+
+    this.likedMovies = profiles.reduce((acc, profile) => {
+      const fav = profile.favoriteMovieID;
+      if (acc[fav]) {
+        acc[fav].push(users[profile.userID]);
+      } else {
+        acc[fav] = [users[profile.userID]];
+      }
+      return acc;
+    }, {});
   }
-  
+
   render() {
+    const { likedMovies } = this;
+
     return (
       <div className="App">
         <header className="App-header">
@@ -125,25 +123,7 @@ class App extends Component {
           <h1 className="App-title">ReactND - Coding Practice</h1>
         </header>
         <h2>How Popular is Your Favorite Movie?</h2>
-		{Object.entries(movies).map(([key, movie]) => {
-          console.log(movie)
-          const likedByUsers = this.liked[movie.id];
-          return <div>
-            <h2>{movie.name}</h2>
-          
-          {
-            likedByUsers ?
-              <div><p>Liked By:</p>
-              <ul>
-                {likedByUsers.users.map(user => <li>{user.name}</li>)}                 
-            </ul></div>
-            :
-              <p>None of the current users liked this movie</p>
-            
-          }
-          
-          </div>
-        })}
+        <MovieList movies={movies} likedMovies={likedMovies} />
       </div>
     );
   }
