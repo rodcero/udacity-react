@@ -3,7 +3,17 @@ import logo from './logo.svg';
 import './App.css';
 
 class App extends Component {
+  state = {
+    message: '',
+  };
+
+  onMessageChange = message => {
+    this.setState({ message });
+  };
+
   render() {
+    const { message } = this.state;
+
     return (
       <div className="App">
         <header className="App-header">
@@ -11,9 +21,14 @@ class App extends Component {
           <h1 className="App-title">ReactND - Coding Practice</h1>
         </header>
         <div className="container">
-          <input type="text" placeholder="Say Something" />
+          <input
+            type="text"
+            placeholder="Say Something"
+            value={message}
+            onChange={event => this.onMessageChange(event.target.value)}
+          />
           <p className="echo">Echo:</p>
-          <p>This should mirror the text you typed into the input field.</p>
+          <p>{message}</p>
         </div>
       </div>
     );
