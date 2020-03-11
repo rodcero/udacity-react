@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
+import PropsTypes from 'prop-types';
 
 export default class UserList extends Component {
+  static propTypes = {
+    users: PropsTypes.array.isRequired,
+  };
+
   state = {
     hide: false,
   };
